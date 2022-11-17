@@ -8,7 +8,7 @@ import com.example.ShopList.domain.EditShopItemUseCase
 import com.example.ShopList.domain.GetShopListUseCase
 import com.example.ShopList.domain.ShopItem
 
-class MainViewModel: ViewModel() {
+class  MainViewModel: ViewModel() {
 
     private val repository = ShopListRepositoryImpl
 
@@ -16,22 +16,16 @@ class MainViewModel: ViewModel() {
     private val deleteShopItemUseCase = DeleteShopItemUseCase(repository)
     private val editShopItemUseCase = EditShopItemUseCase(repository)
 
-    val shopList = MutableLiveData<List<ShopItem>>()
+    val shopList = getShopListUseCase.getShopList()
 
-    fun getShopList() {
-        val list = getShopListUseCase.getShopList()
-        shopList.value = list
-    }
 
     fun deleteShopItem(shopItem: ShopItem) {
         deleteShopItemUseCase.deleteShopItem(shopItem)
-        getShopList()
     }
 
     fun changeEnableState(shopItem: ShopItem) {
         val newItem = shopItem.copy(enabled = !shopItem.enabled)
         editShopItemUseCase.editShopItem(newItem)
-        getShopList()
     }
 
 }
